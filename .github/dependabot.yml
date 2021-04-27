@@ -8,3 +8,4 @@ updates:
       time: "09:00"
     allow:
       - dependency-name: "@webex/*"
+      - dependency-type: "all"
