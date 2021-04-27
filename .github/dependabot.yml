@@ -7,5 +7,4 @@ updates:
       interval: "daily"
       time: "09:00"
     allow:
-      - dependency-name: "@webex/sdk-component-adapter"
-      - dependency-name: "@webex/components"
+      - dependency-name: "@webex/*"
