@@ -48,58 +48,58 @@ describe('Meeting Widget', () => {
     expect(MeetingPage.meetingInfo).toBeDisplayed();
     MeetingPage.unloadWidget();
   });
-
-  it('mutes audio before joining meeting', () => {
-    MeetingPage.loadWidget(meetingDestination);
-    MeetingPage.muteAudioBtn.click();
-    expect(MeetingPage.muteAudioBtn).not.toBeVisible();
-    expect(MeetingPage.unmuteAudioBtn).toBeVisible();
-    MeetingPage.unloadWidget();
-  });
-
-  it('mutes video before joining meeting', () => {
-    MeetingPage.loadWidget(meetingDestination);
-    MeetingPage.muteVideoBtn.click();
-    expect(MeetingPage.muteVideoBtn).not.toBeVisible();
-    expect(MeetingPage.unmuteVideoBtn).toBeVisible();
-    MeetingPage.unloadWidget();
-  });
-
-  it('displays "Waiting for others" after joining meeting', () => {
-    MeetingPage.loadWidget(meetingDestination);
-    expect(MeetingPage.waitingForOthers).not.toExist();
-    MeetingPage.joinMeetingBtn.click();
-    MeetingPage.waitingForOthers.waitForDisplayed({timeout: 10000});
-    expect(MeetingPage.waitingForOthers).toBeVisible();
-    MeetingPage.unloadWidget();
-  });
-
-  it('mutes audio after joining meeting', () => {
-    MeetingPage.loadWidget(meetingDestination);
-    MeetingPage.joinMeetingBtn.click();
-    MeetingPage.waitingForOthers.waitForDisplayed({timeout: 10000});
-    MeetingPage.muteAudioBtn.click();
-    expect(MeetingPage.muteAudioBtn).not.toBeVisible();
-    expect(MeetingPage.unmuteAudioBtn).toBeVisible();
-    MeetingPage.unloadWidget();
-  });
-
-  it('mutes video after joining meeting', () => {
-    MeetingPage.loadWidget(meetingDestination);
-    MeetingPage.joinMeetingBtn.click();
-    MeetingPage.waitingForOthers.waitForDisplayed({timeout: 10000});
-    MeetingPage.muteVideoBtn.click();
-    expect(MeetingPage.unmuteVideoBtn).toBeVisible();
-    MeetingPage.unloadWidget();
-  });
-
-  it('leave the meeting', () => {
-    MeetingPage.loadWidget(meetingDestination);
-    MeetingPage.joinMeetingBtn.click();
-    MeetingPage.waitingForOthers.waitForDisplayed({timeout: 10000});
-    MeetingPage.leaveMeetingBtn.click();
-    MeetingPage.meetingWidget.waitForDisplayed({timeout: 10000});
-    expect(MeetingPage.meetingWidget).toHaveTextContaining("You've successfully left the meeting");
-    MeetingPage.unloadWidget();
-  });
+  //
+  // it('mutes audio before joining meeting', () => {
+  //   MeetingPage.loadWidget(meetingDestination);
+  //   MeetingPage.muteAudioBtn.click();
+  //   expect(MeetingPage.muteAudioBtn).not.toBeVisible();
+  //   expect(MeetingPage.unmuteAudioBtn).toBeVisible();
+  //   MeetingPage.unloadWidget();
+  // });
+  //
+  // it('mutes video before joining meeting', () => {
+  //   MeetingPage.loadWidget(meetingDestination);
+  //   MeetingPage.muteVideoBtn.click();
+  //   expect(MeetingPage.muteVideoBtn).not.toBeVisible();
+  //   expect(MeetingPage.unmuteVideoBtn).toBeVisible();
+  //   MeetingPage.unloadWidget();
+  // });
+  //
+  // it('displays "Waiting for others" after joining meeting', () => {
+  //   MeetingPage.loadWidget(meetingDestination);
+  //   expect(MeetingPage.waitingForOthers).not.toExist();
+  //   MeetingPage.joinMeetingBtn.click();
+  //   MeetingPage.waitingForOthers.waitForDisplayed({timeout: 10000});
+  //   expect(MeetingPage.waitingForOthers).toBeVisible();
+  //   MeetingPage.unloadWidget();
+  // });
+  //
+  // it('mutes audio after joining meeting', () => {
+  //   MeetingPage.loadWidget(meetingDestination);
+  //   MeetingPage.joinMeetingBtn.click();
+  //   MeetingPage.waitingForOthers.waitForDisplayed({timeout: 10000});
+  //   MeetingPage.muteAudioBtn.click();
+  //   expect(MeetingPage.muteAudioBtn).not.toBeVisible();
+  //   expect(MeetingPage.unmuteAudioBtn).toBeVisible();
+  //   MeetingPage.unloadWidget();
+  // });
+  //
+  // it('mutes video after joining meeting', () => {
+  //   MeetingPage.loadWidget(meetingDestination);
+  //   MeetingPage.joinMeetingBtn.click();
+  //   MeetingPage.waitingForOthers.waitForDisplayed({timeout: 10000});
+  //   MeetingPage.muteVideoBtn.click();
+  //   expect(MeetingPage.unmuteVideoBtn).toBeVisible();
+  //   MeetingPage.unloadWidget();
+  // });
+  //
+  // it('leave the meeting', () => {
+  //   MeetingPage.loadWidget(meetingDestination);
+  //   MeetingPage.joinMeetingBtn.click();
+  //   MeetingPage.waitingForOthers.waitForDisplayed({timeout: 10000});
+  //   MeetingPage.leaveMeetingBtn.click();
+  //   MeetingPage.meetingWidget.waitForDisplayed({timeout: 10000});
+  //   expect(MeetingPage.meetingWidget).toHaveTextContaining("You've successfully left the meeting");
+  //   MeetingPage.unloadWidget();
+  // });
 });

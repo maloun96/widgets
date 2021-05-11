@@ -68,6 +68,10 @@ exports.config = {
       maxInstances: 5,
       acceptInsecureCerts: true,
     }]: []),
+    ...(process.env.WEBEX_TEST_SAFARI ? [{
+      browserName: 'safari',
+      maxInstances: 5,
+    }]: []),
   ],
   //
   // ===================
