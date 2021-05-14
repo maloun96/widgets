@@ -25,7 +25,7 @@ describe('Meeting Widget', () => {
       console.error(error);
       console.error(error.body);
     }
-    
+
     expect(accessToken).toBeDefined();
     expect(meetingDestination).toBeDefined();
 
@@ -39,7 +39,7 @@ describe('Meeting Widget', () => {
     MeetingPage.unloadWidget();
     if (user) {
       if (room) {
-        browser.call(() => user.sdk.rooms.remove(room).catch(console.error));
+        browser.call(() => user.sdk?.rooms.remove(room).catch(console.error));
       }
       browser.call(() => removeUser(user));
     }
