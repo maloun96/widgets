@@ -1,7 +1,21 @@
 require('dotenv').config();
 require('dotenv').config({path: '.env.default'});
 
+const RUN_IN_SAUCELABS = !!(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY && process.env.SAUCE_REGION);
+
+const SAUCE_LABS_OPTIONS = RUN_IN_SAUCELABS && {
+  'sauce:options': {
+    extendedDebugging: true,
+    capturePerformance: true,
+  },
+};
+
 exports.config = {
+  ...(RUN_IN_SAUCELABS && {
+    user: process.env.SAUCE_USERNAME,
+    key: process.env.SAUCE_ACCESS_KEY,
+    region: process.env.SAUCE_REGION,
+  }),
   //
   // ====================
   // Runner Configuration
@@ -47,7 +61,7 @@ exports.config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 10,
+  maxInstances: 1,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -58,21 +72,66 @@ exports.config = {
       browserName: 'chrome',
       maxInstances: 5,
       acceptInsecureCerts: true,
+      'goog:chromeOptions': {
+        args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--disable-infobars'],
+      },
+      ...SAUCE_LABS_OPTIONS,
     }] : []),
     ...(process.env.WEBEX_TEST_FIREFOX ? [{
       browserName: 'firefox',
       maxInstances: 5,
-      acceptInsecureCerts: true,
+      'moz:firefoxOptions': {
+        ...(RUN_IN_SAUCELABS
+          ? {
+              args: [
+                '-start-debugger-server',
+                '9222'
+              ],
+              prefs: {
+                'devtools.chrome.enabled': true,
+                'devtools.debugger.prompt-connection': false,
+                'devtools.debugger.remote-enabled': true,
+                'dom.webnotifications.enabled': false,
+                'media.webrtc.hw.h264.enabled': true,
+                'media.getusermedia.screensharing.enabled': true,
+                'media.navigator.permission.disabled': true,
+                'media.navigator.streams.fake': true,
+                'media.peerconnection.video.h264_enabled': true
+              }
+            }
+          : {
+              prefs: {
+                'dom.webnotifications.enabled': false,
+                'media.webrtc.hw.h264.enabled': true,
+                'media.getusermedia.screensharing.enabled': true,
+                'media.navigator.permission.disabled': true,
+                'media.navigator.streams.fake': true,
+                'media.peerconnection.video.h264_enabled': true,
+              },
+            }),
+      },
+      ...SAUCE_LABS_OPTIONS,
     }] : []),
     ...(process.env.WEBEX_TEST_EDGE ? [{
-      browserName: 'MicrosoftEdge',
-      maxInstances: 5,
-      acceptInsecureCerts: true,
-    }]: []),
+        browserName: 'MicrosoftEdge',
+        maxInstances: 5,
+        'ms:edgeOptions': {
+          args: [
+            '--disable-features=WebRtcHideLocalIpsWithMdns',
+            '--use-fake-device-for-media-stream',
+            '--use-fake-ui-for-media-stream',
+          ],
+        },
+        ...SAUCE_LABS_OPTIONS,
+      }] : []),
     ...(process.env.WEBEX_TEST_SAFARI ? [{
-      browserName: 'safari',
-      maxInstances: 5,
-    }]: []),
+        browserName: 'safari',
+        maxInstances: 5,
+        'webkit:WebRTC': {
+          DisableInsecureMediaCapture: true
+        },
+        ...SAUCE_LABS_OPTIONS,
+      }] : []),
   ],
   //
   // ===================
@@ -125,7 +184,18 @@ exports.config = {
   // To run the tests locally you need to ensure that:
   // 1) You have the minimum required Java version for your OS - https://github.com/vvo/selenium-standalone/blob/master/docs/java-versions.md
   // 2) You have installed the browsers that are defined in capabilities (e.g. Chrome, Firefox, MicrosoftEdge)
-  services: ['selenium-standalone'],
+
+  services: RUN_IN_SAUCELABS
+    ? [
+        [
+          'sauce',
+          {
+            sauceConnect: false,
+            sauceConnectOpts: {},
+          },
+        ],
+      ]
+    : [['selenium-standalone']],
 
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
